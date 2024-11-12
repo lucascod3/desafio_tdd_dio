@@ -1,52 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Calculadora
+namespace CalculadoraApp
 {
     public class Calculadora
     {
-        private List<string> listaHistorico;
-        private string data;
+        private List<string> historicoOperacoes;
+        private readonly string dataOperacao;
 
         public Calculadora(string data)
         {
-            listaHistorico = new List<string>();
-            this.data = data;
+            historicoOperacoes = new List<string>();
+            this.dataOperacao = data;
         }
 
-        public int somar(int valor1, int valor2)
+        public int Somar(int a, int b)
         {
-            int resultado = valor1 + valor2;
-            listaHistorico.Insert(0, "Resultado: " + resultado + " Data: " + data);
+            int resultado = a + b;
+            AdicionarAoHistorico(resultado);
             return resultado;
         }
         
-        public int subtrair(int valor1, int valor2)
+        public int Subtrair(int a, int b)
         {
-            int resultado = valor1 - valor2;
-            listaHistorico.Insert(0, "Resultado: " + resultado + " Data: " + data);
+            int resultado = a - b;
+            AdicionarAoHistorico(resultado);
             return resultado;
         }
 
-        public int multiplicar(int valor1, int valor2)
+        public int Multiplicar(int a, int b)
         {
-            int resultado = valor1 * valor2;
-            listaHistorico.Insert(0, "Resultado: " + resultado + " Data: " + data);
+            int resultado = a * b;
+            AdicionarAoHistorico(resultado);
             return resultado;
         }
 
-        public int dividir(int valor1, int valor2)
+        public int Dividir(int a, int b)
         {
-            int resultado = valor1 / valor2;
-            listaHistorico.Insert(0, "Resultado: " + resultado + " Data: " + data);
+            if (b == 0)
+                throw new DivideByZeroException("Divisão por zero não permitida.");
+
+            int resultado = a / b;
+            AdicionarAoHistorico(resultado);
             return resultado;
         }
 
-        public List<string> historico()
+        public List<string> ObterHistorico()
         {
-            listaHistorico.RemoveRange(3, listaHistorico.Count - 3);
-            return listaHistorico;
+            if (historicoOperacoes.Count > 3)
+                historicoOperacoes.RemoveRange(3, historicoOperacoes.Count - 3);
+
+            return historicoOperacoes;
         } 
+
+        private void AdicionarAoHistorico(int resultado)
+        {
+            historicoOperacoes.Insert(0, $"Resultado: {resultado} Data: {dataOperacao}");
+        }
     }
 }
+
